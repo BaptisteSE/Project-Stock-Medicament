@@ -24,6 +24,16 @@ public class Passerelle {
         Statement state = conn.createStatement();
         return conn;
     }
+    public static ArrayList<Utilisateur> donnerTousLesUser() throws SQLException {    
+        String requete = "select * from Utilisateur order by iduser";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete);
+        ArrayList<Utilisateur> desUser = new ArrayList<>();
+        while (jeuResultat.next()) {
+            desUser.add(new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("mdp"),jeuResultat.getString("email"),jeuResultat.getInt("idfonction")));
+        }
+        return desUser;
+    }
     public static boolean ConnexionUser(String email,String pwd) throws SQLException{
         boolean check = false;
             Utilisateur unUtilisateur = null;
@@ -53,7 +63,20 @@ public class Passerelle {
         }
         return unUtilisateur;
     }
-    
+    public static Utilisateur donneUserId(int unId) throws SQLException{
+        
+        Utilisateur unUtilisateur = null;
+        
+        String requete = "SELECT * FROM utilisateur WHERE iduser="+unId;
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete);
+        
+        while(jeuResultat.next()){
+            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("email"),jeuResultat.getString("mdp"),jeuResultat.getInt("idfonction")); 
+        }
+        
+        return unUtilisateur;
+    }    
     // AJOUTER USER
     public static boolean ajouterUser(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
@@ -99,6 +122,20 @@ public class Passerelle {
         
         return valeur;
     }
+    /**
+    public static String donneLibelleFonction(int unId) throws SQLException{
+        
+        String requete = "SELECT libelle FROM fonction WHERE idfonction="+unId;
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete);
+        
+        while(jeuResultat.next()){
+            
+        }
+        
+        return ;
+    }
+    **/
 
     
 }
