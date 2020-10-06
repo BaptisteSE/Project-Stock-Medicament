@@ -16,9 +16,6 @@ public class Passerelle {
     }
 
     // CONNECTION A LA BASE DE DONNEES
-    // Retourne un objet connection
-    // Commentaire Baptiste
-    //com benjamin
     public static Connection connexionBdd() throws SQLException {
         String url = "jdbc:postgresql://192.168.1.245:5432/slam2021_stockmedicaments_seret";
         String user = "seret";
