@@ -34,6 +34,17 @@ public class Passerelle {
         }
         return desUser;
     }
+    public static Demande DonneLesDemandesParIdService(int id) throws SQLException{
+        Demande uneDemande =null;
+        String requete ="SELECT idd,datedujour,nbcommand,idservice,idm FROM demande WHERE idservice='"+id+"'";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        if (jeuResultat.next())
+        {
+            uneDemande = new Demande(jeuResultat.getInt("idd"),jeuResultat.getDate("datedujour"),jeuResultat.getInt("nbcommand"),jeuResultat.getString("idservice"),jeuResultat.getInt("idm")); 
+        }
+        return uneDemande;
+    }
     public static boolean ConnexionUser(String email,String pwd) throws SQLException{
         boolean check = false;
             Utilisateur unUtilisateur = null;
@@ -131,7 +142,7 @@ public class Passerelle {
         
         while(jeuResultat.next()){
             
-        }
+        }0
         
         return ;
     }
