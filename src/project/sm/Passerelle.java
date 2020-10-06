@@ -3,10 +3,12 @@ package project.sm;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 public class Passerelle {
 
@@ -133,6 +135,8 @@ public class Passerelle {
         
         return valeur;
     }
+    
+    
     /**
     public static String donneLibelleFonction(int unId) throws SQLException{
         
