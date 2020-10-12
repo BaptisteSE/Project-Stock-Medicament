@@ -15,17 +15,15 @@ import javax.swing.DefaultListModel;
  */
 public class AfficherStockService extends javax.swing.JFrame {
 
-    /**
-     * Creates new form AfficherProduits
-     */
-    public AfficherStockService() throws SQLException {
+    private int _idService;
+    
+    public AfficherStockService(int idService) throws SQLException {
         initComponents();
-        
+        _idService = idService;
         DefaultListModel listModel = new DefaultListModel();
-        ArrayList<Utilisateur> lesUser = Passerelle.donnerTousLesUser();
-        
-        for (Utilisateur unUser : lesUser){
-            listModel.addElement(unUser.toString());      
+        ArrayList<MedicamentService> lesMedic = Passerelle.DonneLeStockDuService(_idService);
+        for (MedicamentService unMedic : lesMedic){
+            listModel.addElement(unMedic.toString());      
         }
         jList1.setModel(listModel);
     }

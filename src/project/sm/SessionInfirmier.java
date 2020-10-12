@@ -5,17 +5,29 @@
  */
 package project.sm;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author sio2020
  */
 public class SessionInfirmier extends javax.swing.JFrame {
 
+    static private Utilisateur _user; 
+    
     /**
      * Creates new form SessionInfirmier
      */
-    public SessionInfirmier() {
+    public SessionInfirmier(Utilisateur user) {
         initComponents();
+        _user = user;
+        System.out.println(_user.getIdservice());
+        int idService = _user.getIdservice();
+        String id_str = Integer.toString(_user.getIdservice());
+        idservice.setText(id_str);
+        idservice.setEnabled(false);
     }
 
     /**
@@ -27,40 +39,48 @@ public class SessionInfirmier extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnAfficherStock = new javax.swing.JButton();
+        javax.swing.JButton btnFaireDemande = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        idservice = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton1.setText("Afficher le stock du service");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnAfficherStock.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnAfficherStock.setText("Afficher le stock du service");
+        btnAfficherStock.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                btnAfficherStockMouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnAfficherStock.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnAfficherStockActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jButton2.setText("Faire une demande");
-        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnFaireDemande.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnFaireDemande.setText("Faire une demande");
+        btnFaireDemande.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton2MouseClicked(evt);
+                btnFaireDemandeMouseClicked(evt);
             }
         });
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnFaireDemande.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnFaireDemandeActionPerformed(evt);
             }
         });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel1.setText("Service :");
+
+        idservice.setName("idservice"); // NOI18N
+        idservice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idserviceActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -71,43 +91,59 @@ public class SessionInfirmier extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(252, 252, 252)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(btnFaireDemande, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAfficherStock, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(173, 173, 173)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 426, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(168, Short.MAX_VALUE))
+                        .addGap(210, 210, 210)
+                        .addComponent(jLabel1)
+                        .addGap(43, 43, 43)
+                        .addComponent(idservice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(305, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(74, 74, 74)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(50, 50, 50)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(idservice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72)
+                .addComponent(btnAfficherStock, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnFaireDemande, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(192, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnAfficherStockActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAfficherStockActionPerformed
+        try {
+            new AfficherStockService(_user.getIdservice()).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionInfirmier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAfficherStockActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void btnFaireDemandeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFaireDemandeActionPerformed
+        try {
+            new DemandeService(_user.getIdservice()).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionInfirmier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnFaireDemandeActionPerformed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void btnAfficherStockMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAfficherStockMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_btnAfficherStockMouseClicked
 
-    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+    private void btnFaireDemandeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFaireDemandeMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2MouseClicked
+    }//GEN-LAST:event_btnFaireDemandeMouseClicked
+
+    private void idserviceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idserviceActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idserviceActionPerformed
 
     /**
      * @param args the command line arguments
@@ -138,15 +174,17 @@ public class SessionInfirmier extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
-                new SessionInfirmier().setVisible(true);
+                new SessionInfirmier(_user).setVisible(true);
+                
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton btnAfficherStock;
+    private javax.swing.JTextField idservice;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }

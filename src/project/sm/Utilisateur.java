@@ -15,13 +15,15 @@ public class Utilisateur {
     private String mdp;
     private String email;
     private int idfonction;
+    private int idservice;
 
-    public Utilisateur(int iduser, String libelle, String mdp, String email, int idfonction) {
+    public Utilisateur(int iduser, String libelle, String mdp, String email, int idfonction, int idservice) {
         this.iduser = iduser;
         this.libelle = libelle;
         this.mdp = mdp;
         this.email = email;
         this.idfonction = idfonction;
+        this.idservice = idservice;
     }
 
     public int getIduser() {
@@ -62,6 +64,14 @@ public class Utilisateur {
 
     public void setIdfonction(int idfonction) {
         this.idfonction = idfonction;
+    }
+
+    public int getIdservice() {
+        return idservice;
+    }
+
+    public void setIdservice(int idservice) {
+        this.idservice = idservice;
     }
 
     @Override

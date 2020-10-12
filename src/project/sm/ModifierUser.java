@@ -290,7 +290,7 @@ public class ModifierUser extends javax.swing.JFrame {
         }else {
             
             try {
-                Utilisateur unNouveauUtilisateur = new Utilisateur(id, nomUser, mdp, email, fonction);
+                Utilisateur unNouveauUtilisateur = new Utilisateur(id, nomUser, mdp, email, fonction,1);
                 if(Passerelle.modifierUser(unNouveauUtilisateur) == true){
                     message.setText("L'utilisateur "+id+" a été modifié");
                 }else{

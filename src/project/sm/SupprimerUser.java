@@ -141,7 +141,7 @@ public class SupprimerUser extends javax.swing.JFrame {
     private void btnSupprimerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnSupprimerMouseClicked
         try {
             int id = Integer.parseInt(idProduit.getText());
-            Utilisateur unUtilisateur = new Utilisateur(id,null,null,null,0);
+            Utilisateur unUtilisateur = new Utilisateur(id,null,null,null,0,0);
             if(Passerelle.supprimerUser(unUtilisateur) == true){
                 message.setText("L'utilisateur "+id+" a été supprimé");
             }else{

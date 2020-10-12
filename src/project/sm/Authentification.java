@@ -166,7 +166,7 @@ public class Authentification extends javax.swing.JFrame {
                 }
                 if(idFonction == 2){
                     JOptionPane.showMessageDialog(null, "Connexion au compte infirmier. Connexion établie !"); 
-                    new SessionInfirmier().setVisible(true);
+                    new SessionInfirmier(unUtilisateur).setVisible(true);
                 }
                 if(idFonction == 3){
                     

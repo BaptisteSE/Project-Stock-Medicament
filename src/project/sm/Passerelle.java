@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Passerelle {
 
@@ -19,9 +20,14 @@ public class Passerelle {
 
     // CONNECTION A LA BASE DE DONNEES
     public static Connection connexionBdd() throws SQLException {
+        /**
         String url = "jdbc:postgresql://192.168.1.245:5432/slam2021_stockmedicaments_seret";
         String user = "seret";
         String passwd = "seret";
+        **/
+        String url = "jdbc:postgresql://127.0.0.1:5432/slam2021_stockmedicaments_seret";
+        String user = "postgres";
+        String passwd = "root";
         Connection conn = (Connection) DriverManager.getConnection(url, user, passwd);
         Statement state = conn.createStatement();
         return conn;
@@ -32,21 +38,103 @@ public class Passerelle {
         ResultSet jeuResultat = state.executeQuery(requete);
         ArrayList<Utilisateur> desUser = new ArrayList<>();
         while (jeuResultat.next()) {
-            desUser.add(new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("mdp"),jeuResultat.getString("email"),jeuResultat.getInt("idfonction")));
+            desUser.add(new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("mdp"),jeuResultat.getString("email"),jeuResultat.getInt("idfonction"),jeuResultat.getInt("idservice"))); 
         }
         return desUser;
     }
-    public static Demande DonneLesDemandesParIdService(int id) throws SQLException{
-        Demande uneDemande =null;
-        String requete ="SELECT idd,datedujour,nbcommand,idservice,idm FROM demande WHERE idservice='"+id+"'";
+    public static ArrayList<Medicament> donnerTousLesMedicaments() throws SQLException {    
+        String requete = "select * from Medicament order by idm";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete);
+        ArrayList<Medicament> desMedoc = new ArrayList<>();
+        while (jeuResultat.next()) {
+            desMedoc.add(new Medicament(jeuResultat.getInt("idm"),jeuResultat.getString("libelle"),jeuResultat.getInt("prixm"),jeuResultat.getInt("qttestock"))); 
+        }
+        return desMedoc;
+    }
+    
+    public static boolean creerDemande(Demande uneDemande,int idService) throws SQLException{
+        boolean valeur;
+        try{
+            int idm = uneDemande.getDemandeS().get(0).getIdm(); 
+            String values = Integer.toString(idm)
+                    +",'"+LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                    +"',"+Integer.toString(idService)
+                    +","+Integer.toString(uneDemande.getNbcommand());
+            System.out.println(values);
+            String requete = "INSERT INTO demande(idm, datedujour, idservice, nbcommand) VALUES("+values+")";
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(requete);
+            valeur = true;
+            
+            boolean result = Passerelle.UpdateLeStockMedicament(idm, uneDemande.getNbcommand());
+        }catch(Exception e){
+            System.out.println("Erreur : "+e.getMessage());
+            valeur = false;
+        }
+        
+        return valeur;
+    }
+    
+    public static boolean UpdateLeStockMedicament(int idm, int qtedde) throws SQLException{
+        boolean valeur;
+        try{
+            int qttestock = Passerelle.GetLeStockMedicament(idm);
+            int qttestock_new = qttestock - qtedde;
+            String requete = "UPDATE medicament SET qttestock="+qttestock_new+" WHERE idm="+idm;
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(requete);
+            valeur = true;
+        }catch(Exception e){
+            System.out.println("Erreur : "+e.getMessage());
+            valeur = false;
+        }
+        
+        return valeur;
+    }
+    
+    public static int GetLeStockMedicament(int idm) throws SQLException{ 
+        int qttestock = 0;
+        ArrayList<MedicamentService> desMedic = new ArrayList<>();
+        String requete ="SELECT m.idm, libelle, m.qttestock FROM medicament m WHERE m.idm='"+idm+"'";
         Statement state = connexionBdd().createStatement();
         ResultSet jeuResultat = state.executeQuery(requete); 
         if (jeuResultat.next())
         {
-            uneDemande = new Demande(jeuResultat.getInt("idd"),jeuResultat.getDate("datedujour"),jeuResultat.getInt("nbcommand"),jeuResultat.getString("idservice"),jeuResultat.getInt("idm")); 
+            qttestock = jeuResultat.getInt("qttestock"); 
         }
-        return uneDemande;
+        return qttestock;
     }
+    
+    public static boolean CheckLeStockMedicament(int idm, int qtedde) throws SQLException{
+        boolean result = false;
+        int qttestock = 0;
+        ArrayList<MedicamentService> desMedic = new ArrayList<>();
+        String requete ="SELECT m.idm, libelle, m.qttestock FROM medicament m WHERE m.idm='"+idm+"'";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        if (jeuResultat.next())
+        {
+            qttestock = jeuResultat.getInt("qttestock");
+            if (qttestock >= qtedde) {
+                result = true;
+            }
+        }
+        return result;
+    }
+    
+    public static ArrayList<MedicamentService> DonneLeStockDuService(int id) throws SQLException{
+        ArrayList<MedicamentService> desMedic = new ArrayList<>();
+        String requete ="SELECT m.idm, libelle, d.qtteStockMedicament FROM medicament m JOIN Donner d ON d.idm = m.idm WHERE d.idservice='"+id+"'";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        while (jeuResultat.next())
+        {
+            desMedic.add(new MedicamentService(jeuResultat.getInt("idm"),jeuResultat.getString("libelle"),jeuResultat.getInt("qtteStockMedicament"))); 
+        }
+        return desMedic;
+    }
+    
     public static boolean ConnexionUser(String email,String pwd) throws SQLException{
         boolean check = false;
             Utilisateur unUtilisateur = null;
@@ -67,12 +155,12 @@ public class Passerelle {
     }
     public static Utilisateur donnerUser(String email) throws SQLException{
         Utilisateur unUtilisateur =null;
-        String requete ="SELECT email,mdp,iduser,libelle,idfonction FROM utilisateur WHERE email='"+email+"'";
+        String requete ="SELECT email,mdp,iduser,libelle,idfonction,idservice FROM utilisateur WHERE email='"+email+"'";
         Statement state = connexionBdd().createStatement();
         ResultSet jeuResultat = state.executeQuery(requete); 
         if (jeuResultat.next())
         {
-            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("email"),jeuResultat.getString("mdp"),jeuResultat.getInt("idfonction")); 
+            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("email"),jeuResultat.getString("mdp"),jeuResultat.getInt("idfonction"),jeuResultat.getInt("idservice")); 
         }
         return unUtilisateur;
     }
@@ -85,7 +173,7 @@ public class Passerelle {
         ResultSet jeuResultat = state.executeQuery(requete);
         
         while(jeuResultat.next()){
-            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("email"),jeuResultat.getString("mdp"),jeuResultat.getInt("idfonction")); 
+            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("email"),jeuResultat.getString("mdp"),jeuResultat.getInt("idfonction"),jeuResultat.getInt("idservice")); 
         }
         
         return unUtilisateur;
@@ -94,7 +182,36 @@ public class Passerelle {
     public static boolean ajouterUser(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
         try{
-            String requete = "INSERT INTO utilisateur(iduser, libelle, mdp, email, idfonction) VALUES("+unUtilisateur.getIduser()+",'"+unUtilisateur.getLibelle()+"','"+unUtilisateur.getMdp()+"','"+unUtilisateur.getEmail()+"',"+unUtilisateur.getIdfonction()+")";
+            String values = unUtilisateur.getIduser()
+                    +",'"+unUtilisateur.getLibelle()
+                    +"','"+unUtilisateur.getMdp()
+                    +"','"+unUtilisateur.getEmail()
+                    +"',"+unUtilisateur.getIdfonction()
+                    +","+unUtilisateur.getIdservice();
+            System.out.println(values);
+            String requete = "INSERT INTO utilisateur(iduser, libelle, mdp, email, idfonction, idservice) VALUES("+values+")";
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(requete);
+            valeur = true;
+        }catch(Exception e){
+            System.out.println("Erreur : "+e.getMessage());
+            valeur = false;
+        }
+        
+        return valeur;
+    }
+    // AJOUTER USER SERVICE NULL
+    public static boolean ajouterUserNullService(Utilisateur unUtilisateur) throws SQLException{
+        boolean valeur;
+        try{
+            System.out.println("ajouterUserNullService");
+            String values = unUtilisateur.getIduser()
+                    +",'"+unUtilisateur.getLibelle()
+                    +"','"+unUtilisateur.getMdp()
+                    +"','"+unUtilisateur.getEmail()
+                    +"',"+unUtilisateur.getIdfonction()+",null";
+            System.out.println(values);
+            String requete = "INSERT INTO utilisateur(iduser, libelle, mdp, email, idfonction, idservice) VALUES("+values+")";
             Statement state = connexionBdd().createStatement();
             int nb = state.executeUpdate(requete);
             valeur = true;
