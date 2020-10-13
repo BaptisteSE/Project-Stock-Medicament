@@ -106,7 +106,20 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         return valeur;
     }
     
+    
     public static int GetLeStockMedicament(int idm) throws SQLException{ 
+        int qttestock = 0;
+        ArrayList<MedicamentService> desMedic = new ArrayList<>();
+        String requete ="SELECT m.idm, libelle, m.qttestock FROM medicament m WHERE m.idm='"+idm+"'";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        if (jeuResultat.next())
+        {
+            qttestock = jeuResultat.getInt("qttestock"); 
+        }
+        return qttestock;
+    }
+    public static int SetLeStockMedicament(int idm) throws SQLException{ 
         int qttestock = 0;
         ArrayList<MedicamentService> desMedic = new ArrayList<>();
         String requete ="SELECT m.idm, libelle, m.qttestock FROM medicament m WHERE m.idm='"+idm+"'";
@@ -143,7 +156,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         ResultSet jeuResultat = state.executeQuery(requete); 
         while (jeuResultat.next())
         {
-            desMedic.add(new MedicamentService(jeuResultat.getInt("idm"),jeuResultat.getString("libelle"),jeuResultat.getInt("qttestock"))); 
+            desMedic.add(new MedicamentService(jeuResultat.getInt("idm"),jeuResultat.getString("libelle"),jeuResultat.getInt("qttestockmedicament"))); 
         }
         return desMedic;
     }

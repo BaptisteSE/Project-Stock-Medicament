@@ -159,11 +159,13 @@ public class DemandeService extends javax.swing.JFrame {
                 }
             } 
             Demande uneDemande = new Demande(0, null, nbcommand_int);
+            
             uneDemande.ajouterMedicament(unMedicament);
             try {
                 boolean checkStock = Passerelle.CheckLeStockMedicament(unMedicament.getIdm(), nbcommand_int);
                 if (checkStock) {
                     boolean result = Passerelle.creerDemande(uneDemande, _idService);
+                    
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(DemandeService.class.getName()).log(Level.SEVERE, null, ex);
