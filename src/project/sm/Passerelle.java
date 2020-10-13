@@ -265,33 +265,39 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         
         return valeur;
     }
-    /**
+   
     // COMMANDES PHARMACIE FOURNISSEURS
-    public void ajouterCommandeF(int idCommandes,int qtte) throws SQLException{
+    public static boolean ajouterCommande(int idM,int qtte) throws SQLException{
+        boolean verif = false;
+        /**
         Commande uneCommande = new Commande(idCommandes,laDate,qtte);// creation d'un objet commande
-        lesCommandes.add(uneCommande);
+        uneCommande.ajouterCommande(uneCommande);
+        **/
         try{
             Statement stmt = connexionBdd().createStatement();
-            PreparedStatement prep1 = connexionBdd().prepareStatement("insert into Commandes(idCommande,qtteCommande,dateCommande) values(id,qtte,NOW())"); //ajout de la commande dans la table commande
-            prep1.setInt(1,idCommandes);
+            PreparedStatement prep1 = connexionBdd().prepareStatement("insert into Commandes(idm,qtteCommande,dateCommande) values(idM,qtte,NOW())"); //ajout de la commande dans la table commande
+            prep1.setInt(1,idM);
             prep1.setInt(2,qtte);
             prep1.executeUpdate();
-            
+            /**
             Statement prep2 = connexionBdd().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT qtteStock from Medicaments WHERE idM ='idCommandes' ");
+            ResultSet res = stmt.executeQuery("SELECT qtteStock from Medicaments WHERE idM ='idM' ");
             int laQtte = res.getInt(1); // recup le resultat
             laQtte=laQtte+qtte;
             
-            PreparedStatement prep3 = connexionBdd().prepareStatement("UPDATE Medicament SET qtteStock = 'res' WHERE idM='idCommandes'"); //Ajout de la commande dans le stock pharmacie
+            PreparedStatement prep3 = connexionBdd().prepareStatement("UPDATE Medicament SET qtteStock = 'res' WHERE idM='idM'"); //Ajout de la commande dans le stock pharmacie
             prep3.setInt(1,laQtte);
+            verif=true;**/
         }catch(SQLException e){
+            verif=false;
             e.printStackTrace();
         }
+        return(verif);
         
     }
     
     // envoie de la demande
-    public void envoyerMedicament(int idMedicament,int nbCommande) throws SQLException{
+    public static void envoyerMedicament(int idMedicament,int nbCommande) throws SQLException{
         try{
             Statement stmt = connexionBdd().createStatement();
             PreparedStatement prep = connexionBdd().prepareStatement("insert into Demande(idD,nbCommande,dateDuJour) values(id,nbC,NOW())"); //Ajout de la demande dans la table demande
@@ -302,7 +308,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
                     e.printStackTrace();
             }
     }
-    **/
+    
     
     /**
     public static String donneLibelleFonction(int unId) throws SQLException{
