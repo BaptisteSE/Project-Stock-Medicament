@@ -138,12 +138,12 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     
     public static ArrayList<MedicamentService> DonneLeStockDuService(int id) throws SQLException{
         ArrayList<MedicamentService> desMedic = new ArrayList<>();
-        String requete ="SELECT m.idm, libelle, d.qtteStockMedicament FROM medicament m JOIN Donner d ON d.idm = m.idm WHERE d.idservice='"+id+"'";
+        String requete ="SELECT m.idm, libelle, d.qttestockmedicament FROM medicament m JOIN Donner d ON d.idm = m.idm WHERE d.idservice='"+id+"'";
         Statement state = connexionBdd().createStatement();
         ResultSet jeuResultat = state.executeQuery(requete); 
         while (jeuResultat.next())
         {
-            desMedic.add(new MedicamentService(jeuResultat.getInt("idm"),jeuResultat.getString("libelle"),jeuResultat.getInt("qtteStockMedicament"))); 
+            desMedic.add(new MedicamentService(jeuResultat.getInt("idm"),jeuResultat.getString("libelle"),jeuResultat.getInt("qttestock"))); 
         }
         return desMedic;
     }
