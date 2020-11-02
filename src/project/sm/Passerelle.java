@@ -137,6 +137,37 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     }
     
     public static ArrayList<MedicamentService> DonneLeStockDuService(int id) throws SQLException{
+    public static int getLeStockService(int idservice, int idm) throws SQLException{ 
+        int qttestockmedicament = 0;
+        ArrayList<MedicamentService> desMedic = new ArrayList<>();
+        String requete ="SELECT idm, idservice, qttestockmedicament FROM donner d WHERE d.idm="+idm+" and d.idservice="+idservice;
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        if (jeuResultat.next())
+        {
+            qttestockmedicament = jeuResultat.getInt("qttestockmedicament"); 
+        }
+        return qttestockmedicament;
+    }
+    
+    public static boolean ajouterDansLeStockService(int idservice, int idm, int qtedde) throws SQLException{
+        boolean valeur;
+        try{
+            int qttestock = Passerelle.getLeStockService(idservice, idm);
+            int qttestock_new = qttestock + qtedde;
+            String requete = "UPDATE donner SET qttestockmedicament="+qttestock_new+" WHERE idm="+idm+" and idservice="+idservice;
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(requete);
+            valeur = true;
+        }catch(Exception e){
+            System.out.println("Erreur : "+e.getMessage());
+            valeur = false;
+        }
+        
+        return valeur;
+    }
+    
+    public static ArrayList<MedicamentService> donneLeStockDuService(int id) throws SQLException{
         ArrayList<MedicamentService> desMedic = new ArrayList<>();
         String requete ="SELECT m.idm, libelle, d.qtteStockMedicament FROM medicament m JOIN Donner d ON d.idm = m.idm WHERE d.idservice='"+id+"'";
         Statement state = connexionBdd().createStatement();
