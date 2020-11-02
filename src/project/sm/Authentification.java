@@ -156,7 +156,7 @@ public class Authentification extends javax.swing.JFrame {
         String mdp = new String(jPasswordField1.getPassword());
         
         try {
-            if(Passerelle.ConnexionUser(email, mdp)==true){
+            if(Passerelle.connexionUser(email, mdp)==true){
                 Utilisateur unUtilisateur = Passerelle.donnerUser(email);
                 int idFonction = unUtilisateur.getIdfonction();
                 
