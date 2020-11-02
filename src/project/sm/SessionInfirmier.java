@@ -44,6 +44,7 @@ public class SessionInfirmier extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         idservice = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        btnFaireSupp = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,6 +97,19 @@ public class SessionInfirmier extends javax.swing.JFrame {
             }
         });
 
+        btnFaireSupp.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnFaireSupp.setText("Supprimer une quantité du stock");
+        btnFaireSupp.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnFaireSuppMouseClicked(evt);
+            }
+        });
+        btnFaireSupp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFaireSuppActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -103,16 +117,17 @@ public class SessionInfirmier extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(252, 252, 252)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnFaireDemande, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAfficherStock, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(210, 210, 210)
                         .addComponent(jLabel1)
                         .addGap(43, 43, 43)
-                        .addComponent(idservice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(305, Short.MAX_VALUE))
+                        .addComponent(idservice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(252, 252, 252)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnFaireDemande, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAfficherStock, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnFaireSupp, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(292, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton1))
@@ -129,7 +144,9 @@ public class SessionInfirmier extends javax.swing.JFrame {
                 .addComponent(btnAfficherStock, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43)
                 .addComponent(btnFaireDemande, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(192, Short.MAX_VALUE))
+                .addGap(33, 33, 33)
+                .addComponent(btnFaireSupp, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(102, Short.MAX_VALUE))
         );
 
         pack();
@@ -171,6 +188,18 @@ public class SessionInfirmier extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void btnFaireSuppMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnFaireSuppMouseClicked
+        try {
+            new SupprimerStockService(_user.getIdservice()).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(SessionInfirmier.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnFaireSuppMouseClicked
+
+    private void btnFaireSuppActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFaireSuppActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnFaireSuppActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -210,6 +239,7 @@ public class SessionInfirmier extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAfficherStock;
+    private javax.swing.JButton btnFaireSupp;
     private javax.swing.JTextField idservice;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
