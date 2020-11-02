@@ -72,12 +72,15 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
             String values = Integer.toString(idm)
                     +",'"+LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                     +"',"+Integer.toString(idService)
+                    +","+Integer.toString(nbcommand);
             System.out.println(values);
             String requete = "INSERT INTO demande(idm, datedujour, idservice, nbcommand) VALUES("+values+")";
             Statement state = connexionBdd().createStatement();
             int nb = state.executeUpdate(requete);
             valeur = true;
             
+            boolean result = Passerelle.updateLeStockMedicament(idm, nbcommand);
+            boolean result_service = Passerelle.ajouterDansLeStockService(idService, idm, nbcommand);
         }catch(Exception e){
             System.out.println("Erreur : "+e.getMessage());
             valeur = false;
@@ -86,8 +89,10 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         return valeur;
     }
     
+    public static boolean updateLeStockMedicament(int idm, int qtedde) throws SQLException{
         boolean valeur;
         try{
+            int qttestock = Passerelle.getLeStockMedicament(idm);
             int qttestock_new = qttestock - qtedde;
             String requete = "UPDATE medicament SET qttestock="+qttestock_new+" WHERE idm="+idm;
             Statement state = connexionBdd().createStatement();
@@ -101,6 +106,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         return valeur;
     }
     
+    public static int getLeStockMedicament(int idm) throws SQLException{ 
         int qttestock = 0;
         ArrayList<MedicamentService> desMedic = new ArrayList<>();
         String requete ="SELECT m.idm, libelle, m.qttestock FROM medicament m WHERE m.idm='"+idm+"'";
@@ -113,6 +119,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         return qttestock;
     }
     
+    public static boolean checkLeStockMedicament(int idm, int qtedde) throws SQLException{
         boolean result = false;
         int qttestock = 0;
         ArrayList<MedicamentService> desMedic = new ArrayList<>();
@@ -141,6 +148,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         return desMedic;
     }
     
+    public static boolean connexionUser(String email,String pwd) throws SQLException{
         boolean check = false;
             Utilisateur unUtilisateur = null;
             String requete ="SELECT email,mdp,iduser,libelle,idfonction FROM utilisateur WHERE email='"+email+"' AND mdp='"+pwd+"'";
