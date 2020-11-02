@@ -136,7 +136,6 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         return result;
     }
     
-    public static ArrayList<MedicamentService> DonneLeStockDuService(int id) throws SQLException{
     public static int getLeStockService(int idservice, int idm) throws SQLException{ 
         int qttestockmedicament = 0;
         ArrayList<MedicamentService> desMedic = new ArrayList<>();
