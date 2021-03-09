@@ -8,6 +8,8 @@ package project.sm;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -35,7 +37,6 @@ public class ModifierUser extends javax.swing.JFrame {
         idUser = new javax.swing.JTextField();
         nom = new javax.swing.JTextField();
         mdpUser = new javax.swing.JTextField();
-        fonctionUser = new javax.swing.JTextField();
         emailUser = new javax.swing.JTextField();
         btnValider = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -49,6 +50,9 @@ public class ModifierUser extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         btnQuitter = new javax.swing.JButton();
+        jLabelService = new javax.swing.JLabel();
+        fonctionUser = new javax.swing.JComboBox<>();
+        jComboBox2 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -67,8 +71,6 @@ public class ModifierUser extends javax.swing.JFrame {
         });
 
         mdpUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-
-        fonctionUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
         emailUser.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -155,11 +157,29 @@ public class ModifierUser extends javax.swing.JFrame {
                 .addGap(0, 36, Short.MAX_VALUE))
         );
 
+        jLabelService.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabelService.setText("Service");
+        jLabelService.setEnabled(false);
+
+        fonctionUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Infirmier", "Pharmacien" }));
+        fonctionUser.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        fonctionUser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                fonctionUserActionPerformed(evt);
+            }
+        });
+
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setEnabled(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(65, 65, 65)
+                .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,23 +193,23 @@ public class ModifierUser extends javax.swing.JFrame {
                         .addGap(94, 94, 94)
                         .addComponent(btnValider))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addComponent(jLabelService))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(fonctionUser, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(mdpUser, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(emailUser, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nom, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(211, 211, 211)
-                .addComponent(btnModifier))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(62, 62, 62)
-                .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(mdpUser)
+                            .addComponent(emailUser)
+                            .addComponent(nom, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                            .addComponent(fonctionUser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(188, 188, 188)
+                        .addComponent(btnModifier))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -218,11 +238,15 @@ public class ModifierUser extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(fonctionUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelService)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
                 .addComponent(btnModifier)
                 .addGap(18, 18, 18)
                 .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(65, Short.MAX_VALUE))
+                .addGap(43, 43, 43))
         );
 
         pack();
@@ -250,13 +274,21 @@ public class ModifierUser extends javax.swing.JFrame {
                 nom.setText(null);
                 mdpUser.setText(null);
                 emailUser.setText(null);
-                fonctionUser.setText(null);
+                fonctionUser.setName(null);
                 message.setText("Le produit "+id+" n'existe pas");
             }else {
                 nom.setText(unUtilisateur.getLibelle());
                 mdpUser.setText(String.valueOf(unUtilisateur.getMdp()));
                 emailUser.setText(String.valueOf(unUtilisateur.getEmail()));
-                fonctionUser.setText(String.valueOf(unUtilisateur.getIdfonction()));
+                String labels[] = { "Admin", "Infirmier", "Pharmacien" };
+                ComboBoxModel<String> aModel =  new DefaultComboBoxModel(labels);
+
+                if(unUtilisateur.getIdfonction()==1){
+                    fonctionUser.setModel(aModel);
+                }else if(unUtilisateur.getIdfonction()==2){
+                    fonctionUser.setModel(aModel);
+                }
+                //fonctionUser.setName(String.valueOf(unUtilisateur.getIdfonction()));
                 message.setText(null);
             }
         } catch(NumberFormatException e) { 
@@ -276,9 +308,16 @@ public class ModifierUser extends javax.swing.JFrame {
         int id = Integer.parseInt(idUser.getText());
         String mdp = mdpUser.getText();
         String email = emailUser.getText();
-        int fonction = Integer.parseInt(fonctionUser.getText());
+        int fonction = 0;
+        int service = 0;
         String nomUser = nom.getText();
-        
+        if(fonctionUser.getSelectedIndex()==0){
+                fonction = 1;   
+            }else if(fonctionUser.getSelectedIndex()==1){
+                fonction = 2;
+            }else if(fonctionUser.getSelectedIndex()==2){
+                fonction = 3;            
+            }
         Utilisateur unUtilisateur = null;
         try {
             unUtilisateur = Passerelle.donneUserId(id);
@@ -306,6 +345,10 @@ public class ModifierUser extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnQuitterMouseClicked
 
+    private void fonctionUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fonctionUserActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fonctionUserActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -313,8 +356,9 @@ public class ModifierUser extends javax.swing.JFrame {
     private javax.swing.JButton btnQuitter;
     private javax.swing.JButton btnValider;
     private javax.swing.JTextField emailUser;
-    private javax.swing.JTextField fonctionUser;
+    private javax.swing.JComboBox<String> fonctionUser;
     private javax.swing.JTextField idUser;
+    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -322,6 +366,7 @@ public class ModifierUser extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabelService;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField mdpUser;
     private javax.swing.JTextField message;
