@@ -323,11 +323,10 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         uneCommande.ajouterCommande(uneCommande);
         **/
         try{
-            Statement stmt = connexionBdd().createStatement();
-            PreparedStatement prep1 = connexionBdd().prepareStatement("insert into commande(idm,qtteCommande,dateCommande) values(1,15,NOW())"); //ajout de la commande dans la table commande
-            prep1.setInt(1,idM);
-            prep1.setInt(2,qtte);
-            prep1.executeUpdate();
+            String prep1 = "insert into commande(idm,qtteCommande,dateCommande) values("+idM+","+qtte+",NOW())"; //ajout de la commande dans la table commande
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(prep1);
+            verif = true;
             /**
             Statement prep2 = connexionBdd().createStatement();
             ResultSet res = stmt.executeQuery("SELECT qtteStock from Medicaments WHERE idM ='idM' ");
