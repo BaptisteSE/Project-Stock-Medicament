@@ -358,8 +358,38 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
             }
     }
     
-    
     /**
+    // COMMANDES PHARMACIE FOURNISSEURS
+    public void ajouterCommandeF(int idCommandes,int qtte) throws SQLException{
+        try{
+            Statement stmt = connexionBdd().createStatement();
+            PreparedStatement prep1 = connexionBdd().prepareStatement("insert into Commandes(idCommande,qtteCommande,dateCommande) values(id,qtte,NOW())");
+            prep1.setInt(1,idCommandes);
+            prep1.setInt(2,qtte);
+            prep1.executeUpdate();
+            
+            Statement prep2 = connexionBdd().createStatement();
+            ResultSet res = stmt.executeQuery("SELECT qtteStock");
+            
+            PreparedStatement prep3 = connexionBdd().prepareStatement("UPDATE Medicament SET qtteStock = ''");
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+    }
+    
+    public void envoyerMedicament(int idMedicament,int nbCommande) throws SQLException{
+        try{
+            Statement stmt = connexionBdd().createStatement();
+            PreparedStatement prep = connexionBdd().prepareStatement("insert into Demande(idD,nbCommande,dateDuJour) values(id,nbC,NOW())");
+            prep.setInt(1,idMedicament);
+            prep.setInt(2, nbCommande);
+            prep.executeUpdate();
+            }catch(SQLException e){
+                    e.printStackTrace();
+            }
+    }
+    
     public static String donneLibelleFonction(int unId) throws SQLException{
         
         String requete = "SELECT libelle FROM fonction WHERE idfonction="+unId;
