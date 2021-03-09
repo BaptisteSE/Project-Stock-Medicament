@@ -324,7 +324,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         **/
         try{
             Statement stmt = connexionBdd().createStatement();
-            PreparedStatement prep1 = connexionBdd().prepareStatement("insert into Commandes(idm,qtteCommande,dateCommande) values(idM,qtte,NOW())"); //ajout de la commande dans la table commande
+            PreparedStatement prep1 = connexionBdd().prepareStatement("insert into commande(idm,qtteCommande,dateCommande) values(1,15,NOW())"); //ajout de la commande dans la table commande
             prep1.setInt(1,idM);
             prep1.setInt(2,qtte);
             prep1.executeUpdate();
@@ -336,13 +336,15 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
             
             PreparedStatement prep3 = connexionBdd().prepareStatement("UPDATE Medicament SET qtteStock = 'res' WHERE idM='idM'"); //Ajout de la commande dans le stock pharmacie
             prep3.setInt(1,laQtte);
-            verif=true;**/
+            verif=true;
+           **/
         }catch(SQLException e){
             verif=false;
             e.printStackTrace();
         }
         return(verif);
         
+       
     }
     
     // envoie de la demande
@@ -358,7 +360,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
             }
     }
     
-    /**
+    
     // COMMANDES PHARMACIE FOURNISSEURS
     public void ajouterCommandeF(int idCommandes,int qtte) throws SQLException{
         try{
@@ -377,19 +379,8 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         }
         
     }
-    
-    public void envoyerMedicament(int idMedicament,int nbCommande) throws SQLException{
-        try{
-            Statement stmt = connexionBdd().createStatement();
-            PreparedStatement prep = connexionBdd().prepareStatement("insert into Demande(idD,nbCommande,dateDuJour) values(id,nbC,NOW())");
-            prep.setInt(1,idMedicament);
-            prep.setInt(2, nbCommande);
-            prep.executeUpdate();
-            }catch(SQLException e){
-                    e.printStackTrace();
-            }
-    }
-    
+
+    /**
     public static String donneLibelleFonction(int unId) throws SQLException{
         
         String requete = "SELECT libelle FROM fonction WHERE idfonction="+unId;
