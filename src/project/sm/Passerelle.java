@@ -368,9 +368,13 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
             String prep2 = ("SELECT qtteStock");
             ResultSet rs = state.executeQuery(prep2);
             rs.next();
-            //a finir
+            int laQtteStock = rs.getInt(1);
+            laQtteStock=laQtteStock+qtte;
             
-            PreparedStatement prep3 = connexionBdd().prepareStatement("UPDATE Medicament SET qtteStock = ''");
+            String prep3 = ("UPDATE Medicament SET qtteStock = "+laQtteStock+"");
+            int nb2 = state.executeUpdate(prep3);
+            verif=true;
+                    
         }catch(SQLException e){
             e.printStackTrace();
         }return (verif);
