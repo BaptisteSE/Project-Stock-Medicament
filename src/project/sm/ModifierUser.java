@@ -5,11 +5,16 @@
  */
 package project.sm;
 
+import java.awt.List;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
+import static project.sm.Passerelle.donnerFonction;
+import static project.sm.Passerelle.donnerServices;
 
 /**
  *
@@ -159,9 +164,8 @@ public class ModifierUser extends javax.swing.JFrame {
 
         jLabelService.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabelService.setText("Service");
-        jLabelService.setEnabled(false);
+        jLabelService.setFocusable(false);
 
-        fonctionUser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Infirmier", "Pharmacien" }));
         fonctionUser.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         fonctionUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,47 +173,49 @@ public class ModifierUser extends javax.swing.JFrame {
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setEnabled(false);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
                 .addGap(65, 65, 65)
                 .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(21, 21, 21)
-                                .addComponent(idUser, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(94, 94, 94)
-                        .addComponent(btnValider))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addComponent(jLabelService))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(mdpUser)
-                            .addComponent(emailUser)
-                            .addComponent(nom, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
-                            .addComponent(fonctionUser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(188, 188, 188)
-                        .addComponent(btnModifier))))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(30, 30, 30)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel7)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGap(21, 21, 21)
+                                            .addComponent(idUser, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addGap(94, 94, 94)
+                                    .addComponent(btnValider))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(188, 188, 188)
+                                    .addComponent(btnModifier)))
+                            .addContainerGap(326, Short.MAX_VALUE))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jLabel5, javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabelService))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(mdpUser)
+                                .addComponent(emailUser)
+                                .addComponent(nom, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
+                                .addComponent(fonctionUser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,7 +236,7 @@ public class ModifierUser extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(emailUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(mdpUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -242,7 +248,7 @@ public class ModifierUser extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelService)
                     .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(btnModifier)
                 .addGap(18, 18, 18)
                 .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -269,7 +275,8 @@ public class ModifierUser extends javax.swing.JFrame {
         try {
             int id = Integer.parseInt(idUser.getText());
             Utilisateur unUtilisateur = Passerelle.donneUserId(id);
-            
+            fonctionUser.removeAllItems();
+            jComboBox2.removeAllItems();
             if(unUtilisateur == null){
                 nom.setText(null);
                 mdpUser.setText(null);
@@ -280,13 +287,26 @@ public class ModifierUser extends javax.swing.JFrame {
                 nom.setText(unUtilisateur.getLibelle());
                 mdpUser.setText(String.valueOf(unUtilisateur.getMdp()));
                 emailUser.setText(String.valueOf(unUtilisateur.getEmail()));
-                String labels[] = { "Admin", "Infirmier", "Pharmacien" };
-                ComboBoxModel<String> aModel =  new DefaultComboBoxModel(labels);
-
+                //String labels[] = { "Admin", "Infirmier", "Pharmacien" };
+                //ComboBoxModel<Object> aModel =  new DefaultComboBoxModel(labels);
+                ArrayList<Service> desServices = new ArrayList<Service>();
+                desServices = Passerelle.donnerServices();
+                ArrayList<Fonction> desFonctions = new ArrayList<Fonction>();
+                desFonctions = Passerelle.donnerFonction();             
+                for(Fonction uneFonction : desFonctions){
+                    fonctionUser.addItem(uneFonction.getLibelle());
+                }               
+                //java.util.List<Service> list=new java.util.ArrayList<Service>();
+                for(Service unService : desServices){
+                    jComboBox2.addItem(unService.getLibelle());
+                }
+                //jComboBox2.setModel());
                 if(unUtilisateur.getIdfonction()==1){
-                    fonctionUser.setModel(aModel);
+                    fonctionUser.setSelectedIndex(0);
+                    jComboBox2.setEnabled(false);
                 }else if(unUtilisateur.getIdfonction()==2){
-                    fonctionUser.setModel(aModel);
+                    fonctionUser.setSelectedIndex(1);
+                    jComboBox2.setEnabled(true);                   
                 }
                 //fonctionUser.setName(String.valueOf(unUtilisateur.getIdfonction()));
                 message.setText(null);
@@ -318,6 +338,17 @@ public class ModifierUser extends javax.swing.JFrame {
             }else if(fonctionUser.getSelectedIndex()==2){
                 fonction = 3;            
             }
+        if(jComboBox2.getSelectedIndex()==0){
+            service = 1;
+            }else if(jComboBox2.getSelectedIndex()==1){
+                service = 2;
+            }else if(jComboBox2.getSelectedIndex()==2){
+                service = 3;            
+            }else if(jComboBox2.getSelectedIndex()==3){
+                service = 4;            
+            }else if(jComboBox2.getSelectedIndex()==4){
+                service = 5;            
+            }
         Utilisateur unUtilisateur = null;
         try {
             unUtilisateur = Passerelle.donneUserId(id);
@@ -329,7 +360,7 @@ public class ModifierUser extends javax.swing.JFrame {
         }else {
             
             try {
-                Utilisateur unNouveauUtilisateur = new Utilisateur(id, nomUser, mdp, email, fonction,1);
+                Utilisateur unNouveauUtilisateur = new Utilisateur(id, nomUser, mdp, email, fonction,service);
                 if(Passerelle.modifierUser(unNouveauUtilisateur) == true){
                     message.setText("L'utilisateur "+id+" a été modifié");
                 }else{

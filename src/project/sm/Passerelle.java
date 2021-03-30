@@ -226,6 +226,28 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         }
         return unUtilisateur;
     }
+    public static ArrayList<Service> donnerServices() throws SQLException{
+        ArrayList<Service> desServices = new ArrayList<>();
+        String requete ="SELECT idservice, libelle, secteur FROM service";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        while (jeuResultat.next())
+        {
+            desServices.add(new Service(jeuResultat.getInt("idservice"),jeuResultat.getString("libelle"),jeuResultat.getString("secteur"))); 
+        }
+        return desServices;
+    }
+    public static ArrayList<Fonction> donnerFonction() throws SQLException{
+        ArrayList<Fonction> desFonctions = new ArrayList<>();
+        String requete ="SELECT * FROM fonction order by idfonction";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        while (jeuResultat.next())
+        {
+            desFonctions.add(new Fonction(jeuResultat.getInt("idfonction"),jeuResultat.getString("libelle"))); 
+        }
+        return desFonctions;
+    }
     public static Utilisateur donneUserId(int unId) throws SQLException{
         
         Utilisateur unUtilisateur = null;
