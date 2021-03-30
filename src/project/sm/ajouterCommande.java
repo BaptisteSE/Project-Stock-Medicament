@@ -124,7 +124,6 @@ public class ajouterCommande extends javax.swing.JFrame {
        int id=Integer.parseInt(TextField1.getText());
        int qtte=Integer.parseInt(TextField2.getText());
         try {
-            Passerelle.ajouterCommande(id,qtte);
             if(Passerelle.ajouterCommande(id,qtte)==true){
                 jLabel3.setText("Réussi");
             }else{
