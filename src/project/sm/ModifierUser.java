@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import static project.sm.Passerelle.donnerFonction;
 import static project.sm.Passerelle.donnerServices;
 
@@ -57,7 +58,7 @@ public class ModifierUser extends javax.swing.JFrame {
         btnQuitter = new javax.swing.JButton();
         jLabelService = new javax.swing.JLabel();
         fonctionUser = new javax.swing.JComboBox<>();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        btnService = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -103,10 +104,10 @@ public class ModifierUser extends javax.swing.JFrame {
         jLabel4.setText("Nom");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel5.setText("Mdp");
+        jLabel5.setText("Email");
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel6.setText("Email");
+        jLabel6.setText("Mot de passe");
 
         message.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         message.addActionListener(new java.awt.event.ActionListener() {
@@ -167,9 +168,41 @@ public class ModifierUser extends javax.swing.JFrame {
         jLabelService.setFocusable(false);
 
         fonctionUser.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        fonctionUser.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                fonctionUserItemStateChanged(evt);
+            }
+        });
+        fonctionUser.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                fonctionUserFocusLost(evt);
+            }
+        });
+        fonctionUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                fonctionUserMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                fonctionUserMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                fonctionUserMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                fonctionUserMousePressed(evt);
+            }
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                fonctionUserMouseReleased(evt);
+            }
+        });
         fonctionUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 fonctionUserActionPerformed(evt);
+            }
+        });
+        fonctionUser.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                fonctionUserPropertyChange(evt);
             }
         });
 
@@ -186,19 +219,16 @@ public class ModifierUser extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel7)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel7)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addGap(21, 21, 21)
-                                            .addComponent(idUser, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(94, 94, 94)
-                                    .addComponent(btnValider))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGap(188, 188, 188)
-                                    .addComponent(btnModifier)))
-                            .addContainerGap(326, Short.MAX_VALUE))
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(21, 21, 21)
+                                    .addComponent(idUser, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(94, 94, 94)
+                            .addComponent(btnValider))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(188, 188, 188)
+                            .addComponent(btnModifier))
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -213,8 +243,8 @@ public class ModifierUser extends javax.swing.JFrame {
                                 .addComponent(emailUser)
                                 .addComponent(nom, javax.swing.GroupLayout.DEFAULT_SIZE, 339, Short.MAX_VALUE)
                                 .addComponent(fonctionUser, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(btnService, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addContainerGap(250, Short.MAX_VALUE))
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
@@ -247,7 +277,7 @@ public class ModifierUser extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelService)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnService, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addComponent(btnModifier)
                 .addGap(18, 18, 18)
@@ -276,7 +306,7 @@ public class ModifierUser extends javax.swing.JFrame {
             int id = Integer.parseInt(idUser.getText());
             Utilisateur unUtilisateur = Passerelle.donneUserId(id);
             fonctionUser.removeAllItems();
-            jComboBox2.removeAllItems();
+            btnService.removeAllItems();
             if(unUtilisateur == null){
                 nom.setText(null);
                 mdpUser.setText(null);
@@ -298,15 +328,16 @@ public class ModifierUser extends javax.swing.JFrame {
                 }               
                 //java.util.List<Service> list=new java.util.ArrayList<Service>();
                 for(Service unService : desServices){
-                    jComboBox2.addItem(unService.getLibelle());
+                    btnService.addItem(unService.getLibelle());
                 }
                 //jComboBox2.setModel());
                 if(unUtilisateur.getIdfonction()==1){
                     fonctionUser.setSelectedIndex(0);
-                    jComboBox2.setEnabled(false);
+                    btnService.setEnabled(false);
+                    btnService.setSelectedIndex(-1);
                 }else if(unUtilisateur.getIdfonction()==2){
                     fonctionUser.setSelectedIndex(1);
-                    jComboBox2.setEnabled(true);                   
+                    btnService.setEnabled(true);                   
                 }
                 //fonctionUser.setName(String.valueOf(unUtilisateur.getIdfonction()));
                 message.setText(null);
@@ -338,17 +369,17 @@ public class ModifierUser extends javax.swing.JFrame {
             }else if(fonctionUser.getSelectedIndex()==2){
                 fonction = 3;            
             }
-        if(jComboBox2.getSelectedIndex()==0){
+        if(btnService.getSelectedIndex()==0){
             service = 1;
-            }else if(jComboBox2.getSelectedIndex()==1){
-                service = 2;
-            }else if(jComboBox2.getSelectedIndex()==2){
-                service = 3;            
-            }else if(jComboBox2.getSelectedIndex()==3){
-                service = 4;            
-            }else if(jComboBox2.getSelectedIndex()==4){
-                service = 5;            
-            }
+        }else if(btnService.getSelectedIndex()==1){
+            service = 2;
+        }else if(btnService.getSelectedIndex()==2){
+            service = 3;            
+        }else if(btnService.getSelectedIndex()==3){
+            service = 4;            
+        }else if(btnService.getSelectedIndex()==4){
+            service = 5;            
+        }
         Utilisateur unUtilisateur = null;
         try {
             unUtilisateur = Passerelle.donneUserId(id);
@@ -357,18 +388,33 @@ public class ModifierUser extends javax.swing.JFrame {
         }
         if(unUtilisateur == null){
             message.setText("L'utilisateur "+id+" n'existe pas");
-        }else {
-            
-            try {
-                Utilisateur unNouveauUtilisateur = new Utilisateur(id, nomUser, mdp, email, fonction,service);
-                if(Passerelle.modifierUser(unNouveauUtilisateur) == true){
-                    message.setText("L'utilisateur "+id+" a été modifié");
-                }else{
-                    message.setText("L'utilisateur "+id+" n'a pas été modifié");
+        }else {          
+            if(fonction == 1){
+                Utilisateur unNouveauUtilisateur = new Utilisateur(id, nomUser, mdp, email, fonction, null);
+                try {
+                    if(Passerelle.modifierUser(unNouveauUtilisateur) == true){
+                        message.setText("L'utilisateur "+id+" a été modifié");
+                    }else{
+                        message.setText("L'utilisateur "+id+" n'a pas été modifié");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ModifierUser.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } catch (SQLException ex) {
-                message.setText("Saisie incorrecte");
+            }else if(fonction == 2){
+                Utilisateur unNouveauUtilisateur = new Utilisateur(id, nomUser, mdp, email, fonction,service);
+                try {
+                    if(Passerelle.modifierUser(unNouveauUtilisateur) == true){
+                        message.setText("L'utilisateur "+id+" a été modifié");
+                    }else if(btnService.getSelectedIndex()==-1){
+                        message.setText("Veuillez choisir un service pour l'utilisateur n°"+id);                           
+                    }else{
+                        message.setText("L'utilisateur "+id+" n'a pas été modifié");
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(ModifierUser.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            
         } 
     }//GEN-LAST:event_btnModifierMouseClicked
 
@@ -380,16 +426,56 @@ public class ModifierUser extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_fonctionUserActionPerformed
 
+    private void fonctionUserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_fonctionUserItemStateChanged
+        if(fonctionUser.getSelectedIndex()==0){
+            btnService.setEnabled(false);
+            btnService.setSelectedIndex(-1);
+        }else if(fonctionUser.getSelectedIndex()==1){
+            btnService.setEnabled(true);
+        }else{
+            btnService.setEnabled(false);
+        }
+    }//GEN-LAST:event_fonctionUserItemStateChanged
+
+    private void fonctionUserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fonctionUserMouseClicked
+        //JOptionPane.showMessageDialog(this, "L'item à changé");
+        
+    }//GEN-LAST:event_fonctionUserMouseClicked
+
+    private void fonctionUserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fonctionUserMouseExited
+        
+    }//GEN-LAST:event_fonctionUserMouseExited
+
+    private void fonctionUserMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fonctionUserMouseReleased
+        
+    }//GEN-LAST:event_fonctionUserMouseReleased
+
+    private void fonctionUserMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fonctionUserMousePressed
+       
+    }//GEN-LAST:event_fonctionUserMousePressed
+
+    private void fonctionUserMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_fonctionUserMouseEntered
+        
+    }//GEN-LAST:event_fonctionUserMouseEntered
+
+    private void fonctionUserFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fonctionUserFocusLost
+        
+    }//GEN-LAST:event_fonctionUserFocusLost
+
+    private void fonctionUserPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_fonctionUserPropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_fonctionUserPropertyChange
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnModifier;
     private javax.swing.JButton btnQuitter;
+    private javax.swing.JComboBox<String> btnService;
     private javax.swing.JButton btnValider;
     private javax.swing.JTextField emailUser;
     private javax.swing.JComboBox<String> fonctionUser;
     private javax.swing.JTextField idUser;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
