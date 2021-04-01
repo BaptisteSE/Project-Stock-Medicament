@@ -6,6 +6,7 @@
 package project.sm;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,9 +17,14 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
     /**
      * Creates new form AjouterProduit
      */
-    public AjouterUtilisateur() {
+    public AjouterUtilisateur() throws SQLException {
         initComponents();
         message.setEnabled(false);
+        ArrayList<Fonction> desFonctions = new ArrayList<Fonction>();
+                desFonctions = Passerelle.donnerFonction();             
+                for(Fonction uneFonction : desFonctions){
+                    jComboBox1.addItem(uneFonction.getLibelle());
+                } 
         
     }
 
@@ -177,7 +183,6 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
                 .addGap(0, 49, Short.MAX_VALUE))
         );
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Admin", "Infirmier", "Pharmacien" }));
         jComboBox1.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBox1ItemStateChanged(evt);
