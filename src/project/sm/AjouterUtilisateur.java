@@ -326,27 +326,42 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
         }
             
             //System.out.println("Avant fonction = " + fonction);
-            if (fonction == 1){
+            if (fonction == 1){            
                 Utilisateur unUtilisateur = new Utilisateur(id,nom,mdp,email,fonction,null);
-                if(Passerelle.ajouterUserNullService(unUtilisateur) == true){
+                if(Passerelle.verifUser(unUtilisateur)==false){
+                    if(Passerelle.ajouterUserNullService(unUtilisateur) == true){
                     message.setText("L'utilisateur "+id+" a été ajouté");
-                }else{
+                    }else{
                     message.setText("Erreur, cet id user existe déjà !");
+                    }
+                }else{
+                    message.setText("Erreur, cette email existe déjà !");
                 }
+                
             }else if(fonction == 2){               
                 Utilisateur unUtilisateur = new Utilisateur(id,nom,mdp,email,fonction,service);
-                if(Passerelle.ajouterUser(unUtilisateur) == true){
-                    message.setText("L'utilisateur "+id+" a été ajouté");
+                if(Passerelle.verifUser(unUtilisateur)==false){
+                    if (Passerelle.ajouterUser(unUtilisateur) == true) {
+                        message.setText("L'utilisateur " + id + " a été ajouté");
+                    } else {
+                        message.setText("Erreur, cet id user existe déjà !");
+                    }
                 }else{
-                    message.setText("Erreur, cet id user existe déjà !");
+                    message.setText("Erreur, cette email existe déjà !");
                 }
+                
             }else{
                 Utilisateur unUtilisateur = new Utilisateur(id,nom,mdp,email,fonction,null);
-                if(Passerelle.ajouterUserNullService(unUtilisateur) == true){
+                if(Passerelle.verifUser(unUtilisateur)==false){
+                    if(Passerelle.ajouterUserNullService(unUtilisateur) == true){
                     message.setText("L'utilisateur "+id+" a été ajouté");
-                }else{
+                    }else{
                     message.setText("Erreur, cet id user existe déjà !");
+                    }
+                }else{
+                    message.setText("Erreur, cette email existe déjà !");
                 }
+                
             }
             
             

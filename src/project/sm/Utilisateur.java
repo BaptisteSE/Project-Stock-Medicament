@@ -76,7 +76,7 @@ public class Utilisateur {
 
     @Override
     public String toString() {
-        return "Utilisateur n°" + iduser + " | nom : " + libelle + " | mdp : " + mdp + " | email : " + email + " | idfonction : " + idfonction;
+        return "Utilisateur n°" + iduser + " | nom : " + libelle + " | mdp : " + mdp + " | email : " + email + " | idfonction : " + idfonction + " | idservice : " + idservice;
     }
     
 

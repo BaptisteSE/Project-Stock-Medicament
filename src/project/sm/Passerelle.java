@@ -262,6 +262,18 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         
         return unUtilisateur;
     }    
+    public static boolean verifUser(Utilisateur unUtilisateur) throws SQLException{
+        boolean verif = false;
+        String email = unUtilisateur.getEmail();
+        //String libelle = unUtilisateur.getLibelle();
+        String requete = "SELECT * FROM utilisateur WHERE email='"+email+"'";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete);
+        if(jeuResultat.next()){
+             verif = true;
+         }
+        return verif;
+    }
     // AJOUTER USER
     public static boolean ajouterUser(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
