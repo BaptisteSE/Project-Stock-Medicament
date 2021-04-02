@@ -310,7 +310,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     public static boolean modifierUser(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
         try{
-            String requete = "UPDATE utilisateur SET libelle='"+unUtilisateur.getLibelle()+"', email='"+unUtilisateur.getEmail()+"', mdp='"+unUtilisateur.getMdp()+"', idservice="+unUtilisateur.getIdservice()+", idfonction="+unUtilisateur.getIdfonction()+" WHERE iduser="+unUtilisateur.getIduser();
+            String requete = "UPDATE utilisateur SET libelle='"+unUtilisateur.getLibelle()+"', mdp='"+unUtilisateur.getMdp()+"', email='"+unUtilisateur.getEmail()+"', idservice="+unUtilisateur.getIdservice()+", idfonction="+unUtilisateur.getIdfonction()+" WHERE iduser="+unUtilisateur.getIduser();
             Statement state = connexionBdd().createStatement();
             int nb = state.executeUpdate(requete);
             valeur = true;
