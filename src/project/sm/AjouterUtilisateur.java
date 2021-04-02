@@ -25,7 +25,11 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
                 for(Fonction uneFonction : desFonctions){
                     jComboBox1.addItem(uneFonction.getLibelle());
                 } 
-        
+        ArrayList<Service> desServices = new ArrayList<Service>();
+                desServices = Passerelle.donnerServices();
+        for(Service unService : desServices){
+                    idService.addItem(unService.getLibelle());
+                }
     }
 
     /**
@@ -56,7 +60,7 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
         jLabel8 = new javax.swing.JLabel();
-        idService = new javax.swing.JTextField();
+        idService = new javax.swing.JComboBox<>();
 
         jPanel2.setBackground(new java.awt.Color(0, 102, 204));
         jPanel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -198,8 +202,6 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
         jLabel8.setText("Numero de service");
         jLabel8.setEnabled(false);
 
-        idService.setEditable(false);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -232,10 +234,10 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
                             .addComponent(jLabel8))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(idService)
                             .addComponent(nomUser)
                             .addComponent(mdpUser)
-                            .addComponent(jComboBox1, 0, 182, Short.MAX_VALUE))))
+                            .addComponent(jComboBox1, 0, 182, Short.MAX_VALUE)
+                            .addComponent(idService, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -264,8 +266,10 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, 27, Short.MAX_VALUE)
-                    .addComponent(idService))
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(idService)
+                        .addGap(1, 1, 1)))
                 .addGap(65, 65, 65)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnValider, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -297,25 +301,39 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
             String email = emailUser.getText();
             //int fonction = Integer.parseInt(fonctionUser.getText());
             String nom = nomUser.getText();
+
             int fonction = 0; 
             
             if(jComboBox1.getSelectedIndex()==0){
                 fonction = 1;
-                idService.setText(null);
             }else if(jComboBox1.getSelectedIndex()==1){
                 fonction = 2;
             }else if(jComboBox1.getSelectedIndex()==2){
                 fonction = 3;
-                idService.setText(null);
             }
             
             int service = 0;
-            if(!idService.getText().isEmpty()){
-                service = Integer.parseInt(idService.getText());
-            }
+            if(idService.getSelectedIndex()==0){
+                service = 1;
+            }else if(idService.getSelectedIndex()==1){
+                service = 2;
+            }else if(idService.getSelectedIndex()==2){
+                service = 3;            
+            }else if(idService.getSelectedIndex()==3){
+                service = 4;            
+            }else if(idService.getSelectedIndex()==4){
+                service = 5;            
+        }
             
             //System.out.println("Avant fonction = " + fonction);
-            if (fonction == 2){
+            if (fonction == 1){
+                Utilisateur unUtilisateur = new Utilisateur(id,nom,mdp,email,fonction,null);
+                if(Passerelle.ajouterUserNullService(unUtilisateur) == true){
+                    message.setText("L'utilisateur "+id+" a été ajouté");
+                }else{
+                    message.setText("Erreur, cet id user existe déjà !");
+                }
+            }else if(fonction == 2){               
                 Utilisateur unUtilisateur = new Utilisateur(id,nom,mdp,email,fonction,service);
                 if(Passerelle.ajouterUser(unUtilisateur) == true){
                     message.setText("L'utilisateur "+id+" a été ajouté");
@@ -323,8 +341,7 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
                     message.setText("Erreur, cet id user existe déjà !");
                 }
             }else{
-                
-                Utilisateur unUtilisateur = new Utilisateur(id,nom,mdp,email,fonction,service);
+                Utilisateur unUtilisateur = new Utilisateur(id,nom,mdp,email,fonction,null);
                 if(Passerelle.ajouterUserNullService(unUtilisateur) == true){
                     message.setText("L'utilisateur "+id+" a été ajouté");
                 }else{
@@ -363,15 +380,15 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
          int fonction = 0;
             if(jComboBox1.getSelectedIndex()==0){
                 fonction = 1;
-                idService.setEditable(false);
+                idService.setEnabled(false);
                 jLabel8.setEnabled(false);
             }else if(jComboBox1.getSelectedIndex()==1){
-                idService.setEditable(true);
+                idService.setEnabled(true);
                 jLabel8.setEnabled(true);
                 fonction = 2;
             }else if(jComboBox1.getSelectedIndex()==2){
                 fonction = 3;
-                idService.setEditable(false);
+                idService.setEnabled(false);
                 jLabel8.setEnabled(false);
             }
     }//GEN-LAST:event_jComboBox1ItemStateChanged
@@ -383,7 +400,7 @@ public class AjouterUtilisateur extends javax.swing.JFrame {
     private javax.swing.JButton btnQuitter1;
     private javax.swing.JButton btnValider;
     private javax.swing.JTextField emailUser;
-    private javax.swing.JTextField idService;
+    private javax.swing.JComboBox<String> idService;
     private javax.swing.JTextField idUser;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
