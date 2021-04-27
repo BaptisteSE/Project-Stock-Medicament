@@ -124,7 +124,7 @@ public class EnvoyerMedicament extends javax.swing.JFrame {
                 jLabel3.setText("Echoué");
             }
         } catch (SQLException ex) {
-            Logger.getLogger(ajouterCommande.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ajouterCommandeF.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_Button1MouseClicked
 
