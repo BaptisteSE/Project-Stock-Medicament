@@ -432,21 +432,21 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     }
     
     
-    // COMMANDES PHARMACIE FOURNISSEURS
-    public boolean ajouterCommandeF(int idCommandes,int qtte) throws SQLException{
+// COMMANDES PHARMACIE FOURNISSEURS
+    public static boolean ajouterCommandeF(int idCommandes,int qtte) throws SQLException{
         boolean verif = false;
         try{     
-            String prep1 =("insert into Commandes(idCommande,qtteCommande,dateCommande) values("+idCommandes+","+qtte+",NOW())");
+            String prep1 =("insert into (Commandes(idCommandes,qtteCommande,dateCommande) values("+idCommandes+","+qtte+",NOW())");
             Statement state = connexionBdd().createStatement();
             int nb = state.executeUpdate(prep1);
             
-            String prep2 = ("SELECT qtteStock");
+            String prep2 = ("SELECT qtteStock from Medicament where idm="+idM+"");
             ResultSet rs = state.executeQuery(prep2);
             rs.next();
             int laQtteStock = rs.getInt(1);
             laQtteStock=laQtteStock+qtte;
             
-            String prep3 = ("UPDATE Medicament SET qtteStock = "+laQtteStock+"");
+            String prep3 = ("UPDATE Medicament SET qtteStock = "+laQtteStock+"where idM="+idM+"");
             int nb2 = state.executeUpdate(prep3);
             verif=true;
                     

@@ -16,13 +16,17 @@ public class Demande {
     private int idd;
     private Date datedujour;
     private int nbcommand;
+    private int idM;
+    private String libelle;
     private ArrayList<Medicament> DemandeS;
     private ArrayList<Medicament> EnvoiM;
 
-    public Demande(int idd, Date datedujour, int nbcommand) {
+    public Demande(int idd, Date datedujour, int nbcommand,int idM,String libelle) {
         this.idd = idd;
         this.datedujour = datedujour;
         this.nbcommand = nbcommand;
+        this.idM = idM;
+        this.libelle = libelle;
         DemandeS = new ArrayList<Medicament>();
         EnvoiM = new ArrayList<Medicament>();
     }
@@ -68,10 +72,18 @@ public class Demande {
     public void setEnvoiM(ArrayList<Medicament> EnvoiM) {
         this.EnvoiM = EnvoiM;
     }
+    
+    public int getidM(){
+        return idM;
+    }
 
     @Override
     public String toString() {
         return "Demande{" + "idd=" + idd + ", datedujour=" + datedujour + ", nbcommand=" + nbcommand + ", DemandeS=" + DemandeS + ", EnvoiM=" + EnvoiM + '}';
+    }
+    
+     public String affDemandes() {
+        return "demande n°" + idd + "  le:" + datedujour + "  quantité:" + nbcommand + "  medicament n°" + idM + "  service:" + libelle;
     }
     
     
