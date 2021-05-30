@@ -31,14 +31,16 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
 
     // CONNECTION A LA BASE DE DONNEES
     public static Connection connexionBdd() throws SQLException {
-        /**
+        
         String url = "jdbc:postgresql://192.168.1.245:5432/slam2021_stockmedicaments_seret";
         String user = "seret";
         String passwd = "seret";
-        **/
+        
+        /**
         String url = "jdbc:postgresql://127.0.0.1:5432/slam2021_stockmedicaments_seret";
         String user = "postgres";
         String passwd = "root";
+        **/
         Connection conn = (Connection) DriverManager.getConnection(url, user, passwd);
         Statement state = conn.createStatement();
         return conn;
@@ -136,6 +138,36 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         return result;
     }
     
+    public static int getLeStockService(int idservice, int idm) throws SQLException{ 
+        int qttestockmedicament = 0;
+        ArrayList<MedicamentService> desMedic = new ArrayList<>();
+        String requete ="SELECT idm, idservice, qttestockmedicament FROM donner d WHERE d.idm="+idm+" and d.idservice="+idservice;
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        if (jeuResultat.next())
+        {
+            qttestockmedicament = jeuResultat.getInt("qttestockmedicament"); 
+        }
+        return qttestockmedicament;
+    }
+    
+    public static boolean ajouterDansLeStockService(int idservice, int idm, int qtedde) throws SQLException{
+        boolean valeur;
+        try{
+            int qttestock = Passerelle.getLeStockService(idservice, idm);
+            int qttestock_new = qttestock + qtedde;
+            String requete = "UPDATE donner SET qttestockmedicament="+qttestock_new+" WHERE idm="+idm+" and idservice="+idservice;
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(requete);
+            valeur = true;
+        }catch(Exception e){
+            System.out.println("Erreur : "+e.getMessage());
+            valeur = false;
+        }
+        
+        return valeur;
+    }
+    
     public static ArrayList<MedicamentService> DonneLeStockDuService(int id) throws SQLException{
     public static int getLeStockService(int idservice, int idm) throws SQLException{ 
         int qttestockmedicament = 0;
@@ -169,14 +201,31 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     
     public static ArrayList<MedicamentService> donneLeStockDuService(int id) throws SQLException{
         ArrayList<MedicamentService> desMedic = new ArrayList<>();
-        String requete ="SELECT m.idm, libelle, d.qtteStockMedicament FROM medicament m JOIN Donner d ON d.idm = m.idm WHERE d.idservice='"+id+"'";
+        String requete ="SELECT m.idm, libelle, d.qttestockmedicament FROM medicament m JOIN Donner d ON d.idm = m.idm WHERE d.idservice='"+id+"' ORDER BY m.idm";
         Statement state = connexionBdd().createStatement();
         ResultSet jeuResultat = state.executeQuery(requete); 
         while (jeuResultat.next())
         {
-            desMedic.add(new MedicamentService(jeuResultat.getInt("idm"),jeuResultat.getString("libelle"),jeuResultat.getInt("qtteStockMedicament"))); 
+            desMedic.add(new MedicamentService(jeuResultat.getInt("idm"),jeuResultat.getString("libelle"),jeuResultat.getInt("qttestockmedicament"))); 
         }
         return desMedic;
+    }
+    public static boolean supprimerDansLeStockService(int idservice, int idm, int qtesupp) throws SQLException{
+        boolean valeur = false;
+        int qttestock = Passerelle.getLeStockService(idservice, idm);
+        if (qttestock>=qtesupp){
+            try{
+                int qttestock_new = qttestock - qtesupp;
+                String requete = "UPDATE donner SET qttestockmedicament="+qttestock_new+" WHERE idm="+idm+" and idservice="+idservice;
+                Statement state = connexionBdd().createStatement();
+                int nb = state.executeUpdate(requete);
+                valeur = true;
+            }catch(Exception e){
+                System.out.println("Erreur : "+e.getMessage());
+                valeur = false;
+            }           
+        }
+        return valeur;
     }
     
     public static boolean connexionUser(String email,String pwd) throws SQLException{
@@ -208,6 +257,28 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         }
         return unUtilisateur;
     }
+    public static ArrayList<Service> donnerServices() throws SQLException{
+        ArrayList<Service> desServices = new ArrayList<>();
+        String requete ="SELECT idservice, libelle, secteur FROM service";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        while (jeuResultat.next())
+        {
+            desServices.add(new Service(jeuResultat.getInt("idservice"),jeuResultat.getString("libelle"),jeuResultat.getString("secteur"))); 
+        }
+        return desServices;
+    }
+    public static ArrayList<Fonction> donnerFonction() throws SQLException{
+        ArrayList<Fonction> desFonctions = new ArrayList<>();
+        String requete ="SELECT * FROM fonction order by idfonction";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete); 
+        while (jeuResultat.next())
+        {
+            desFonctions.add(new Fonction(jeuResultat.getInt("idfonction"),jeuResultat.getString("libelle"))); 
+        }
+        return desFonctions;
+    }
     public static Utilisateur donneUserId(int unId) throws SQLException{
         
         Utilisateur unUtilisateur = null;
@@ -222,6 +293,18 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         
         return unUtilisateur;
     }    
+    public static boolean verifUser(Utilisateur unUtilisateur) throws SQLException{
+        boolean verif = false;
+        String email = unUtilisateur.getEmail();
+        //String libelle = unUtilisateur.getLibelle();
+        String requete = "SELECT * FROM utilisateur WHERE email='"+email+"'";
+        Statement state = connexionBdd().createStatement();
+        ResultSet jeuResultat = state.executeQuery(requete);
+        if(jeuResultat.next()){
+             verif = true;
+         }
+        return verif;
+    }
     // AJOUTER USER
     public static boolean ajouterUser(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
@@ -270,7 +353,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     public static boolean modifierUser(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
         try{
-            String requete = "UPDATE utilisateur SET libelle='"+unUtilisateur.getLibelle()+"', email='"+unUtilisateur.getEmail()+"', mdp='"+unUtilisateur.getMdp()+"', idfonction="+unUtilisateur.getIdfonction()+" WHERE id="+unUtilisateur.getIduser();
+            String requete = "UPDATE utilisateur SET libelle='"+unUtilisateur.getLibelle()+"', mdp='"+unUtilisateur.getMdp()+"', email='"+unUtilisateur.getEmail()+"', idservice="+unUtilisateur.getIdservice()+", idfonction="+unUtilisateur.getIdfonction()+" WHERE iduser="+unUtilisateur.getIduser();
             Statement state = connexionBdd().createStatement();
             int nb = state.executeUpdate(requete);
             valeur = true;
@@ -296,45 +379,73 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         
         return valeur;
     }
-    /**
+   
     // COMMANDES PHARMACIE FOURNISSEURS
-    public void ajouterCommandeF(int idCommandes,int qtte) throws SQLException{
-        Commande uneCommande = new Commande(idCommandes,laDate,qtte);// creation d'un objet commande
-        lesCommandes.add(uneCommande);
+    public static boolean ajouterCommande(int idM,int qtte) throws SQLException{
+        boolean verif = false;
         try{
-            Statement stmt = connexionBdd().createStatement();
-            PreparedStatement prep1 = connexionBdd().prepareStatement("insert into Commandes(idCommande,qtteCommande,dateCommande) values(id,qtte,NOW())"); //ajout de la commande dans la table commande
-            prep1.setInt(1,idCommandes);
-            prep1.setInt(2,qtte);
-            prep1.executeUpdate();
-            
-            Statement prep2 = connexionBdd().createStatement();
-            ResultSet res = stmt.executeQuery("SELECT qtteStock from Medicaments WHERE idM ='idCommandes' ");
-            int laQtte = res.getInt(1); // recup le resultat
+            String prep1 = "insert into commande(idm,qtteCommande,dateCommande) values("+idM+","+qtte+",NOW())"; //ajout de la commande dans la table commande
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(prep1);
+          
+            String prep2 = ("SELECT qtteStock from Medicament WHERE idm ="+idM+" ");   
+            ResultSet rs =state.executeQuery(prep2);
+            rs.next();           
+            int laQtte = rs.getInt(1); // recup le resultat
             laQtte=laQtte+qtte;
+             
             
-            PreparedStatement prep3 = connexionBdd().prepareStatement("UPDATE Medicament SET qtteStock = 'res' WHERE idM='idCommandes'"); //Ajout de la commande dans le stock pharmacie
-            prep3.setInt(1,laQtte);
+            String prep3 = ("UPDATE Medicament SET qtteStock = "+laQtte+" WHERE idM="+idM+""); //Ajout de la commande dans le stock pharmacie
+            int nb2 = state.executeUpdate(prep3);           
+            verif=true;
+            
         }catch(SQLException e){
+            verif=false;
             e.printStackTrace();
         }
+        return(verif);
         
+       
     }
     
     // envoie de la demande
-    public void envoyerMedicament(int idMedicament,int nbCommande) throws SQLException{
-        try{
-            Statement stmt = connexionBdd().createStatement();
-            PreparedStatement prep = connexionBdd().prepareStatement("insert into Demande(idD,nbCommande,dateDuJour) values(id,nbC,NOW())"); //Ajout de la demande dans la table demande
-            prep.setInt(1,idMedicament);
-            prep.setInt(2, nbCommande);
-            prep.executeUpdate();
+    public static boolean envoyerMedicament(int idMedicament,int idService,int nbcommande) throws SQLException{
+        boolean verif = false;
+        try{           
+            String prep1 = "insert into Demande(idM,idservice,nbcommand,dateDuJour) values("+idMedicament+","+idService+","+nbcommande+",NOW())"; //Ajout de la demande dans la table demande
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(prep1);   
+            verif=true;
             }catch(SQLException e){
                     e.printStackTrace();
-            }
+            }return(verif);
     }
-    **/
     
+    
+    // COMMANDES PHARMACIE FOURNISSEURS
+    public boolean ajouterCommandeF(int idCommandes,int qtte) throws SQLException{
+        boolean verif = false;
+        try{     
+            String prep1 =("insert into Commandes(idCommande,qtteCommande,dateCommande) values("+idCommandes+","+qtte+",NOW())");
+            Statement state = connexionBdd().createStatement();
+            int nb = state.executeUpdate(prep1);
+            
+            String prep2 = ("SELECT qtteStock");
+            ResultSet rs = state.executeQuery(prep2);
+            rs.next();
+            int laQtteStock = rs.getInt(1);
+            laQtteStock=laQtteStock+qtte;
+            
+            String prep3 = ("UPDATE Medicament SET qtteStock = "+laQtteStock+"");
+            int nb2 = state.executeUpdate(prep3);
+            verif=true;
+                    
+        }catch(SQLException e){
+            e.printStackTrace();
+        }return (verif);
+        
+    }
+
     /**
     public static String donneLibelleFonction(int unId) throws SQLException{
         

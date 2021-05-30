@@ -20,10 +20,10 @@ public class AfficherUser extends javax.swing.JFrame {
      */
     public AfficherUser() throws SQLException {
         initComponents();
-        
+        ArrayList<Fonction> desFonctions = new ArrayList<Fonction>();
+        desFonctions = Passerelle.donnerFonction();
         DefaultListModel listModel = new DefaultListModel();
         ArrayList<Utilisateur> lesUser = Passerelle.donnerTousLesUser();
-        
         for (Utilisateur unUser : lesUser){
             listModel.addElement(unUser.toString());      
         }

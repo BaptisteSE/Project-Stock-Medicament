@@ -36,7 +36,7 @@ public class Fonction {
 
     @Override
     public String toString() {
-        return "Fonction{" + "idFonction=" + idFonction + ", libelle=" + libelle + '}';
+        return "idFonction=" + idFonction + ", libelle=" + libelle + '/';
     }
     
     

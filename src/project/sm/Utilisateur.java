@@ -15,9 +15,9 @@ public class Utilisateur {
     private String mdp;
     private String email;
     private int idfonction;
-    private int idservice;
+    private Integer idservice;
 
-    public Utilisateur(int iduser, String libelle, String mdp, String email, int idfonction, int idservice) {
+    public Utilisateur(int iduser, String libelle, String mdp, String email, int idfonction, Integer idservice) {
         this.iduser = iduser;
         this.libelle = libelle;
         this.mdp = mdp;
@@ -66,17 +66,17 @@ public class Utilisateur {
         this.idfonction = idfonction;
     }
 
-    public int getIdservice() {
+    public Integer getIdservice() {
         return idservice;
     }
 
-    public void setIdservice(int idservice) {
+    public void setIdservice(Integer idservice) {
         this.idservice = idservice;
     }
 
     @Override
     public String toString() {
-        return "Utilisateur n°" + iduser + " | nom : " + libelle + " | mdp : " + mdp + " | email : " + email + " | idfonction : " + idfonction;
+        return "Utilisateur n°" + iduser + " | nom : " + libelle + " | mdp : " + mdp + " | email : " + email + " | idfonction : " + idfonction + " | idservice : " + idservice;
     }
     
 

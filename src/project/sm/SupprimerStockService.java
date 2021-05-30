@@ -18,21 +18,21 @@ import javax.swing.DefaultListModel;
  *
  * @author WQ59
  */
-public class DemandeService extends javax.swing.JFrame {
+public class SupprimerStockService extends javax.swing.JFrame {
 
     private int _idService;
     private ArrayList<Medicament> _lesMedic;
     
-    public DemandeService(int idService) throws SQLException {
+    public SupprimerStockService(int idService) throws SQLException {
         initComponents();
         _idService = idService;
         DefaultListModel listModel = new DefaultListModel();
-        ArrayList<Medicament> lesMedic = Passerelle.donnerTousLesMedicaments();
-        for (Medicament unMedic : lesMedic){
-            listModel.addElement(unMedic.getLibelle());      
+        
+        ArrayList<MedicamentService> lesMedic = Passerelle.DonneLeStockDuService(_idService);
+        for (MedicamentService unMedic : lesMedic){
+            listModel.addElement("Numéro du médicament : "+unMedic.getIdm()+" / Libellé : "+unMedic.getLibelle());  
         }
         listMedoc.setModel(listModel);
-        _lesMedic = lesMedic;
     }
 
     /**
@@ -53,11 +53,12 @@ public class DemandeService extends javax.swing.JFrame {
         btnvalider = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         message = new javax.swing.JLabel();
+        labelIdService = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel1.setText("Demande");
+        jLabel1.setText("Supprimer une quantitée de médicament du service");
 
         listMedoc.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -67,9 +68,9 @@ public class DemandeService extends javax.swing.JFrame {
         jScrollPane1.setViewportView(listMedoc);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        jLabel2.setText("Médicaments disponible");
+        jLabel2.setText("Médicaments du service");
 
-        jLabel3.setText("Quantitée demandée");
+        jLabel3.setText("Quantité à supprimer");
 
         nbcommand.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -92,6 +93,8 @@ public class DemandeService extends javax.swing.JFrame {
             }
         });
 
+        labelIdService.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -99,26 +102,29 @@ public class DemandeService extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(312, 312, 312)
-                        .addComponent(jLabel1))
+                        .addGap(81, 81, 81)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(59, 59, 59)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(73, 73, 73)
-                                .addComponent(jLabel3)
+                                .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(nbcommand, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnvalider))
+                                .addComponent(labelIdService, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(110, 110, 110)
-                                .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(53, Short.MAX_VALUE))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(73, 73, 73)
+                                        .addComponent(jLabel3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(nbcommand, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnvalider))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(38, 38, 38)
+                                        .addComponent(message, javax.swing.GroupLayout.PREFERRED_SIZE, 346, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(24, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jButton1))
@@ -128,7 +134,9 @@ public class DemandeService extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jButton1)
                 .addGap(21, 21, 21)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(labelIdService, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -153,33 +161,37 @@ public class DemandeService extends javax.swing.JFrame {
     }//GEN-LAST:event_nbcommandActionPerformed
 
     private void btnvaliderMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnvaliderMouseClicked
-        int nbcommand_int = Integer.parseInt(nbcommand.getText());
+        int qttesupp = Integer.parseInt(nbcommand.getText());
         int index = listMedoc.getSelectedIndex(); 
         String indice = (String) listMedoc.getSelectedValue(); 
+        ArrayList<MedicamentService> lesMedic;
+        try {
+            lesMedic = Passerelle.DonneLeStockDuService(_idService);
         
-        if (indice != null && nbcommand_int > 0) {
-            Medicament unMedicament = null;
-            for (int i = 0; i < _lesMedic.size(); i++) {
-                if (_lesMedic.get(i).getLibelle() == indice) {
-                    unMedicament = _lesMedic.get(i);
-                    break;
+            int idMedicament = 0;
+            for (MedicamentService unMedic : lesMedic){
+                int num = unMedic.getIdm();
+                String libelle = unMedic.getLibelle();
+
+                if (("Numéro du médicament : "+unMedic.getIdm()+" / Libellé : "+unMedic.getLibelle()).equals(indice)){
+                    idMedicament = unMedic.getIdm();
+                    try {
+                    boolean valeur;
+                    valeur = Passerelle.supprimerDansLeStockService(_idService, idMedicament, qttesupp);
+                    if(valeur==true){
+                        message.setText("La quantité souhaitée a été retirée !");
+                    }else{
+                        message.setText("Aucune quantité n'a pas été retirée");
+                    }
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(SupprimerStockService.class.getName()).log(Level.SEVERE, null, ex);
                 }
-            } 
-            Demande uneDemande = new Demande(0, null, nbcommand_int);
-            uneDemande.ajouterMedicament(unMedicament);
-            try {
-                boolean checkStock = Passerelle.checkLeStockMedicament(unMedicament.getIdm(), nbcommand_int);
-                if (checkStock) {
-                    boolean result = Passerelle.creerDemande(uneDemande, _idService);
-                    message.setText("La demande a été ajoutée !");
-                }
-                else {
-                    message.setText("Stock insuffisant !");
-                }
-            } catch (SQLException ex) {
-                message.setText("Problème sur l'ajout de la demande !");
-                Logger.getLogger(DemandeService.class.getName()).log(Level.SEVERE, null, ex);
+                }           
             }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(SupprimerStockService.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnvaliderMouseClicked
 
@@ -204,14 +216,15 @@ public class DemandeService extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DemandeService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SupprimerStockService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DemandeService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SupprimerStockService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DemandeService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SupprimerStockService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DemandeService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SupprimerStockService.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
@@ -230,6 +243,7 @@ public class DemandeService extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelIdService;
     private javax.swing.JList<String> listMedoc;
     private javax.swing.JLabel message;
     private javax.swing.JTextField nbcommand;

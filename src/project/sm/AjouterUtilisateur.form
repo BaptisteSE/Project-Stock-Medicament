@@ -112,10 +112,10 @@
                       </Group>
                       <EmptySpace min="13" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="idService" max="32767" attributes="0"/>
                           <Component id="nomUser" alignment="0" max="32767" attributes="0"/>
                           <Component id="mdpUser" alignment="0" max="32767" attributes="0"/>
                           <Component id="jComboBox1" alignment="0" pref="182" max="32767" attributes="0"/>
+                          <Component id="idService" max="32767" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -154,8 +154,11 @@
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="jLabel8" pref="27" max="32767" attributes="0"/>
-                  <Component id="idService" max="32767" attributes="0"/>
+                  <Component id="jLabel8" min="-2" pref="27" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <Component id="idService" max="32767" attributes="0"/>
+                      <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
+                  </Group>
               </Group>
               <EmptySpace min="-2" pref="65" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -325,11 +328,7 @@
     <Component class="javax.swing.JComboBox" name="jComboBox1">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="3">
-            <StringItem index="0" value="Admin"/>
-            <StringItem index="1" value="Infirmier"/>
-            <StringItem index="2" value="Pharmacien"/>
-          </StringArray>
+          <StringArray count="0"/>
         </Property>
       </Properties>
       <Events>
@@ -349,10 +348,15 @@
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="idService">
+    <Component class="javax.swing.JComboBox" name="idService">
       <Properties>
-        <Property name="editable" type="boolean" value="false"/>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="0"/>
+        </Property>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+      </AuxValues>
     </Component>
   </SubComponents>
 </Form>
