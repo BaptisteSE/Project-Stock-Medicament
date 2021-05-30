@@ -31,16 +31,16 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
 
     // CONNECTION A LA BASE DE DONNEES
     public static Connection connexionBdd() throws SQLException {
-        
+        /**
         String url = "jdbc:postgresql://192.168.1.245:5432/slam2021_stockmedicaments_seret";
         String user = "seret";
         String passwd = "seret";
+        **/
         
-        /**
         String url = "jdbc:postgresql://127.0.0.1:5432/slam2021_stockmedicaments_seret";
         String user = "postgres";
         String passwd = "root";
-        **/
+        
         Connection conn = (Connection) DriverManager.getConnection(url, user, passwd);
         Statement state = conn.createStatement();
         return conn;
@@ -169,37 +169,6 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     }
     
     public static ArrayList<MedicamentService> DonneLeStockDuService(int id) throws SQLException{
-    public static int getLeStockService(int idservice, int idm) throws SQLException{ 
-        int qttestockmedicament = 0;
-        ArrayList<MedicamentService> desMedic = new ArrayList<>();
-        String requete ="SELECT idm, idservice, qttestockmedicament FROM donner d WHERE d.idm="+idm+" and d.idservice="+idservice;
-        Statement state = connexionBdd().createStatement();
-        ResultSet jeuResultat = state.executeQuery(requete); 
-        if (jeuResultat.next())
-        {
-            qttestockmedicament = jeuResultat.getInt("qttestockmedicament"); 
-        }
-        return qttestockmedicament;
-    }
-    
-    public static boolean ajouterDansLeStockService(int idservice, int idm, int qtedde) throws SQLException{
-        boolean valeur;
-        try{
-            int qttestock = Passerelle.getLeStockService(idservice, idm);
-            int qttestock_new = qttestock + qtedde;
-            String requete = "UPDATE donner SET qttestockmedicament="+qttestock_new+" WHERE idm="+idm+" and idservice="+idservice;
-            Statement state = connexionBdd().createStatement();
-            int nb = state.executeUpdate(requete);
-            valeur = true;
-        }catch(Exception e){
-            System.out.println("Erreur : "+e.getMessage());
-            valeur = false;
-        }
-        
-        return valeur;
-    }
-    
-    public static ArrayList<MedicamentService> donneLeStockDuService(int id) throws SQLException{
         ArrayList<MedicamentService> desMedic = new ArrayList<>();
         String requete ="SELECT m.idm, libelle, d.qttestockmedicament FROM medicament m JOIN Donner d ON d.idm = m.idm WHERE d.idservice='"+id+"' ORDER BY m.idm";
         Statement state = connexionBdd().createStatement();
@@ -228,7 +197,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         return valeur;
     }
     
-    public static boolean connexionUser(String email,String pwd) throws SQLException{
+    public static boolean ConnexionUser(String email,String pwd) throws SQLException{
         boolean check = false;
             Utilisateur unUtilisateur = null;
             String requete ="SELECT email,mdp,iduser,libelle,idfonction FROM utilisateur WHERE email='"+email+"' AND mdp='"+pwd+"'";
@@ -253,7 +222,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         ResultSet jeuResultat = state.executeQuery(requete); 
         if (jeuResultat.next())
         {
-            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("email"),jeuResultat.getString("mdp"),jeuResultat.getInt("idfonction"),jeuResultat.getInt("idservice")); 
+            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("mdp"),jeuResultat.getString("email"),jeuResultat.getInt("idfonction"),jeuResultat.getInt("idservice")); 
         }
         return unUtilisateur;
     }
@@ -288,7 +257,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
         ResultSet jeuResultat = state.executeQuery(requete);
         
         while(jeuResultat.next()){
-            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("email"),jeuResultat.getString("mdp"),jeuResultat.getInt("idfonction"),jeuResultat.getInt("idservice")); 
+            unUtilisateur = new Utilisateur(jeuResultat.getInt("iduser"),jeuResultat.getString("libelle"),jeuResultat.getString("mdp"),jeuResultat.getString("email"),jeuResultat.getInt("idfonction"),jeuResultat.getInt("idservice")); 
         }
         
         return unUtilisateur;
@@ -309,6 +278,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     public static boolean ajouterUser(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
         try{
+            /**
             String values = unUtilisateur.getIduser()
                     +",'"+unUtilisateur.getLibelle()
                     +"','"+unUtilisateur.getMdp()
@@ -316,9 +286,17 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
                     +"',"+unUtilisateur.getIdfonction()
                     +","+unUtilisateur.getIdservice();
             System.out.println(values);
-            String requete = "INSERT INTO utilisateur(iduser, libelle, mdp, email, idfonction, idservice) VALUES("+values+")";
-            Statement state = connexionBdd().createStatement();
-            int nb = state.executeUpdate(requete);
+            **/
+            String requete = "INSERT INTO utilisateur(iduser, libelle, mdp, email, idfonction, idservice) VALUES(?,?,?,?,?,?)";
+            PreparedStatement state = connexionBdd().prepareStatement(requete);
+            state.setInt(1,unUtilisateur.getIduser());  
+            state.setString(2,unUtilisateur.getLibelle());  
+            state.setString(3,unUtilisateur.getMdp());  
+            state.setString(4,unUtilisateur.getEmail());  
+            state.setInt(5,unUtilisateur.getIdfonction());  
+            state.setInt(6,unUtilisateur.getIdservice()); 
+            System.out.println(state.toString());
+            state.executeUpdate();
             valeur = true;
         }catch(Exception e){
             System.out.println("Erreur : "+e.getMessage());
@@ -331,6 +309,7 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     public static boolean ajouterUserNullService(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
         try{
+            /**
             System.out.println("ajouterUserNullService");
             String values = unUtilisateur.getIduser()
                     +",'"+unUtilisateur.getLibelle()
@@ -338,9 +317,17 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
                     +"','"+unUtilisateur.getEmail()
                     +"',"+unUtilisateur.getIdfonction()+",null";
             System.out.println(values);
-            String requete = "INSERT INTO utilisateur(iduser, libelle, mdp, email, idfonction, idservice) VALUES("+values+")";
-            Statement state = connexionBdd().createStatement();
-            int nb = state.executeUpdate(requete);
+            **/
+            String requete = "INSERT INTO utilisateur(iduser, libelle, mdp, email, idfonction, idservice) VALUES(?,?,?,?,?,null)";
+            PreparedStatement state = connexionBdd().prepareStatement(requete);
+            state.setInt(1,unUtilisateur.getIduser());  
+            state.setString(2,unUtilisateur.getLibelle());  
+            state.setString(3,unUtilisateur.getMdp());  
+            state.setString(4,unUtilisateur.getEmail());  
+            state.setInt(5,unUtilisateur.getIdfonction());  
+            //state.setInt(6,unUtilisateur.getIdservice());  
+            System.out.println(state.toString());
+            state.executeUpdate();
             valeur = true;
         }catch(Exception e){
             System.out.println("Erreur : "+e.getMessage());
@@ -353,9 +340,32 @@ java.sql.Date laDate = new java.sql.Date(uneDate.getTime());
     public static boolean modifierUser(Utilisateur unUtilisateur) throws SQLException{
         boolean valeur;
         try{
-            String requete = "UPDATE utilisateur SET libelle='"+unUtilisateur.getLibelle()+"', mdp='"+unUtilisateur.getMdp()+"', email='"+unUtilisateur.getEmail()+"', idservice="+unUtilisateur.getIdservice()+", idfonction="+unUtilisateur.getIdfonction()+" WHERE iduser="+unUtilisateur.getIduser();
-            Statement state = connexionBdd().createStatement();
-            int nb = state.executeUpdate(requete);
+            if(unUtilisateur.getIdfonction()==1){
+                String requete = "UPDATE utilisateur SET libelle=?, mdp=?, email=?, idservice=null, idfonction=? WHERE iduser=?";
+                System.out.println(requete);
+                PreparedStatement state = connexionBdd().prepareStatement(requete);
+                state.setString(1,unUtilisateur.getLibelle());  
+                state.setString(2,unUtilisateur.getMdp());  
+                state.setString(3,unUtilisateur.getEmail());  
+                //state.setInt(4,unUtilisateur.getIdservice());  
+                state.setInt(5,unUtilisateur.getIdfonction()); 
+                state.setInt(6,unUtilisateur.getIduser()); 
+                System.out.println(state.toString());
+                state.executeUpdate();
+            }else{
+                String requete = "UPDATE utilisateur SET libelle=?, mdp=?, email=?, idservice=?, idfonction=? WHERE iduser=?";
+                System.out.println(requete);
+                PreparedStatement state = connexionBdd().prepareStatement(requete);
+                state.setString(1,unUtilisateur.getLibelle());  
+                state.setString(2,unUtilisateur.getMdp());  
+                state.setString(3,unUtilisateur.getEmail());  
+                state.setInt(4,unUtilisateur.getIdservice());  
+                state.setInt(5,unUtilisateur.getIdfonction()); 
+                state.setInt(6,unUtilisateur.getIduser()); 
+                System.out.println(state.toString());
+                state.executeUpdate();
+            }
+            
             valeur = true;
         }catch(Exception e){
             System.out.println("Erreur : "+e.getMessage());

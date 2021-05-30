@@ -21,7 +21,7 @@ public class AfficherStockService extends javax.swing.JFrame {
         initComponents();
         _idService = idService;
         DefaultListModel listModel = new DefaultListModel();
-        ArrayList<MedicamentService> lesMedic = Passerelle.donneLeStockDuService(_idService);
+        ArrayList<MedicamentService> lesMedic = Passerelle.DonneLeStockDuService(_idService);
         for (MedicamentService unMedic : lesMedic){
             listModel.addElement(unMedic.toString());      
         }
